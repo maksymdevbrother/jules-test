@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import * as jose from 'jose';
-import db from '../../../../../database/db'; // Adjust path as necessary
+import db from '../../../../database/db'; // Adjust path as necessary
 
 const JWT_SECRET = process.env.JWT_SECRET;
 

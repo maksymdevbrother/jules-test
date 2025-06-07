@@ -27,7 +27,7 @@ interface AuthProviderProps {
   children: ReactNode;
 }
 
-const JWT_SECRET = process.env.NEXT_PUBLIC_JWT_SECRET || 'your-secret-key-here';
+const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key-here';
 // Note: Exposing JWT_SECRET to the client like this (via NEXT_PUBLIC_) is generally not recommended
 // if the secret is highly sensitive and used for signing tokens on the server.
 // For verifying tokens received from the server, it might be acceptable, but ideally,

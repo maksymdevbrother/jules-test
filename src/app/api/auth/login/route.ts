@@ -1,4 +1,4 @@
-import db from '../../../../../database/db';
+import db from '../../../../database/db';
 import bcrypt from 'bcryptjs';
 import * as jose from 'jose';
 import { NextResponse } from 'next/server';
