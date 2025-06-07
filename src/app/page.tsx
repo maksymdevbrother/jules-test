@@ -1,103 +1,134 @@
-import Image from "next/image";
+'use client';
+
+import Link from 'next/link';
+import { useAuth } from '../lib/auth'; // Adjust path if necessary
+import Image from 'next/image'; // Keep for existing content if desired
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+  const { user, isAuthenticated, logout, isLoading } = useAuth();
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
+  // Basic styling for layout and elements
+  const pageContainerStyle: React.CSSProperties = {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+    minHeight: '100vh',
+    padding: '2rem',
+    fontFamily: 'var(--font-geist-sans)',
+    textAlign: 'center',
+  };
+
+  const contentStyle: React.CSSProperties = {
+    maxWidth: '600px',
+  };
+
+  const headingStyle: React.CSSProperties = {
+    fontSize: '2rem',
+    marginBottom: '1rem',
+  };
+
+  const textStyle: React.CSSProperties = {
+    fontSize: '1.1rem',
+    marginBottom: '1.5rem',
+    lineHeight: '1.6',
+  };
+
+  const linkStyle: React.CSSProperties = {
+    margin: '0 0.5rem',
+    padding: '0.75rem 1.5rem',
+    borderRadius: '0.375rem',
+    textDecoration: 'none',
+    backgroundColor: '#0070f3',
+    color: 'white',
+    fontWeight: 500,
+    transition: 'background-color 0.2s',
+  };
+
+  const buttonStyle: React.CSSProperties = {
+    padding: '0.75rem 1.5rem',
+    fontSize: '1rem',
+    backgroundColor: '#dc3545', // A common red for logout
+    color: 'white',
+    border: 'none',
+    borderRadius: '0.375rem',
+    cursor: 'pointer',
+    transition: 'background-color 0.2s',
+    marginTop: '1rem',
+  };
+
+  if (isLoading) {
+    return (
+      <div style={pageContainerStyle}>
+        <p>Loading...</p>
+      </div>
+    );
+  }
+
+  return (
+    <div style={pageContainerStyle}>
+      <main style={contentStyle}>
+        {isAuthenticated && user ? (
+          <>
+            <h1 style={headingStyle}>Welcome, {user.username}!</h1>
+            <p style={textStyle}>
+              You are successfully logged in. You can now access protected parts of this application.
+            </p>
+            <div style={{ marginTop: '1rem', marginBottom: '1rem' }}>
+              <Link href="/protected" style={{...linkStyle, backgroundColor: '#28a745' }}> {/* Green for contrast */}
+                Go to Protected Page
+              </Link>
+            </div>
+            <button onClick={logout} style={buttonStyle}>
+              Logout
+            </button>
+          </>
+        ) : (
+          <>
             <Image
               className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
+              src="/next.svg"
+              alt="Next.js logo"
+              width={180}
+              height={38}
+              priority
+              style={{ margin: '0 auto 2rem auto' }}
             />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
-        </div>
+            <h1 style={headingStyle}>Welcome to the Next.js Auth Example</h1>
+            <p style={textStyle}>
+              This is a simple application demonstrating user authentication using Next.js App Router,
+              HttpOnly cookies, and React Context. Please login or register to continue.
+            </p>
+            <div>
+              <Link href="/login" style={linkStyle}>
+                Login
+              </Link>
+              <Link href="/register" style={linkStyle}>
+                Register
+              </Link>
+            </div>
+            {/* You can keep or remove the Vercel/Next.js links below */}
+            <div style={{ marginTop: '3rem', borderTop: '1px solid #eaeaea', paddingTop: '2rem' }}>
+              <a
+                href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{ ...linkStyle, backgroundColor: '#000', marginRight: '1rem' }}
+              >
+                Deploy now
+              </a>
+              <a
+                href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{ ...linkStyle, backgroundColor: '#333' }}
+              >
+                Read Next.js Docs
+              </a>
+            </div>
+          </>
+        )}
       </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
     </div>
   );
 }
